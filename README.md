@@ -1,4 +1,4 @@
-# Generative UI/UX Designer
+# Draftly
 
 A web application that generates UI/UX designs from natural language prompts with live preview and code export.
 
@@ -31,8 +31,8 @@ A web application that generates UI/UX designs from natural language prompts wit
 
 1. Clone the repository
 ```bash
-git clone https://github.com/Tanmayjoshi-3601/generative-ui-designer.git
-cd generative-ui-designer
+git clone https://github.com/Tanmayjoshi-3601/draftly.git
+cd draftly
 ```
 
 2. Install dependencies

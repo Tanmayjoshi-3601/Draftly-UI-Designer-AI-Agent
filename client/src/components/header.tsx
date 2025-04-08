@@ -1,5 +1,4 @@
-import { MoonIcon, SunIcon, Github, UserPlus } from "lucide-react";
-import { WandSparkles } from "lucide-react";
+import { MoonIcon, SunIcon, Github, UserPlus, Pencil } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { Button } from "@/components/ui/button";
 
@@ -13,8 +12,8 @@ export default function Header() {
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <div className="flex items-center space-x-2">
-                <WandSparkles className="text-purple-600 h-6 w-6" />
-                <span className="font-bold text-xl">Generative UI/UX Designer</span>
+                <Pencil className="text-blue-600 h-6 w-6" />
+                <span className="font-bold text-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">Draftly</span>
               </div>
             </div>
           </div>
