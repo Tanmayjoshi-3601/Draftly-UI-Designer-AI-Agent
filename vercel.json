@@ -2,11 +2,11 @@
   "version": 2,
   "builds": [
     {
-      "src": "server/index.ts",
+      "src": "vercel-deploy.ts",
       "use": "@vercel/node"
     },
     {
-      "src": "client/package.json",
+      "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
         "buildCommand": "npm run build",
@@ -17,11 +17,11 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "server/index.ts"
+      "dest": "vercel-deploy.ts"
     },
     {
       "src": "/(.*)",
-      "dest": "client/$1"
+      "dest": "/vercel-deploy.ts"
     }
   ]
 }
