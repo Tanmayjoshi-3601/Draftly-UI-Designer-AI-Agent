@@ -2,6 +2,10 @@
 
 A web application that generates UI/UX designs from natural language prompts with live preview and code export.
 
+
+![image](https://github.com/user-attachments/assets/18f0f574-126d-4346-9767-d4f0cd88af66)
+
+
 ## Features
 
 - **AI-Powered Design Generation**: Convert text descriptions into UI designs using OpenAI's GPT-4o model
