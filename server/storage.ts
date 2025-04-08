@@ -1,5 +1,7 @@
 import { designs, type Design, type InsertDesign, type GeneratedDesignResponse } from "@shared/schema";
 import { users, type User, type InsertUser } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -12,50 +14,37 @@ export interface IStorage {
   generateDesign(prompt: string, options?: any): Promise<GeneratedDesignResponse>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  private designsStore: Map<number, Design>;
-  private userIdCounter: number;
-  private designIdCounter: number;
-
-  constructor() {
-    this.users = new Map();
-    this.designsStore = new Map();
-    this.userIdCounter = 1;
-    this.designIdCounter = 1;
-  }
-
+export class DatabaseStorage implements IStorage {
   async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.userIdCounter++;
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
     return user;
   }
 
   async getAllDesigns(): Promise<Design[]> {
-    return Array.from(this.designsStore.values());
+    return db.select().from(designs);
   }
 
   async getDesign(id: number): Promise<Design | undefined> {
-    return this.designsStore.get(id);
+    const [design] = await db.select().from(designs).where(eq(designs.id, id));
+    return design || undefined;
   }
 
   async createDesign(design: InsertDesign & { createdAt: string }): Promise<Design> {
-    const id = this.designIdCounter++;
-    
-    // Create a properly typed Design object
-    const newDesign = {
-      id, 
+    // Ensure the design has the required structure
+    const designData = {
       name: design.name,
       userId: null as number | null, 
       prompt: design.prompt,
@@ -63,7 +52,11 @@ export class MemStorage implements IStorage {
       createdAt: design.createdAt
     };
     
-    this.designsStore.set(id, newDesign);
+    const [newDesign] = await db
+      .insert(designs)
+      .values(designData)
+      .returning();
+    
     return newDesign;
   }
 
@@ -83,4 +76,4 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
